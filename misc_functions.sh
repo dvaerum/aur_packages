@@ -47,8 +47,8 @@ function check_for_new_version() {
 
   touch  "${MY_PACKAGE}/PKGBUILD"
   source "${MY_PACKAGE}/PKGBUILD"
-  my_pkgver="${pkgver}"
-  my_pkgrel="${pkgrel}"
+  my_pkgver="${pkgver:-}"
+  my_pkgrel="${pkgrel:-}"
 
   if ! [ "${original_pkgver}" == "${my_pkgver}" -a "${original_pkgrel}" == "${my_pkgrel}"  ] || [ ${_FORCE:-0} -eq 1 ]; then
     echo "Starter patching of ${ORIGINAL_PACKAGE}..."
