@@ -2,7 +2,6 @@
 
 set -eu
 
-./patch_zfs-dkms.sh
-./patch_zfs-utils.sh
-./patch_mkinitcpio-sd-zfs.sh
-
+for patch_script in $(ls patch_*.sh); do
+  "./${patch_script}"
+done
