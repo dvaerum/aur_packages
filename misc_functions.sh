@@ -30,10 +30,14 @@ set -- "${_POSITIONAL[@]}" # restore positional parameters
 
 function check_for_new_version() {
   rm -rf "${ORIGINAL_PACKAGE}"
-  rm -rf "${MY_PACKAGE}" 
+  rm -rf "${MY_PACKAGE}"
 
   git clone "https://aur.archlinux.org/${ORIGINAL_PACKAGE}.git"
-  git clone "ssh://aur.archlinux.org/${MY_PACKAGE}.git"
+  if [ ${_TEST:-0} -ne 1 ]; then
+    git clone "ssh://aur.archlinux.org/${MY_PACKAGE}.git" "${MY_PACKAGE}"
+  else
+    rsync -a --delete "${ORIGINAL_PACKAGE}/." "${MY_PACKAGE}"
+  fi
 
   source "${ORIGINAL_PACKAGE}/PKGBUILD"
   original_pkgver="${pkgver}"
