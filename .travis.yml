@@ -1,20 +1,26 @@
 ---
 # ex: set tabstop=8 softtabstop=0 expandtab shiftwidth=2 smarttab:
+os: linux
 
-language: python
-dist: bionic
-addons:
-  apt:
-    packages:
-      - git
+services:
+  - docker
 
-install:
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
-  - echo -e "$SSH_KEY" > ~/.ssh/aur
-  - echo -e "Host aur.archlinux.org\n  IdentityFile ~/.ssh/aur\n  User aur" > ~/.ssh/config
-  - echo "aur.archlinux.org,5.9.250.164 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOZAVWmj2k+dHTfyum7FyIivGcVUkDFHaXmPNxDwF7l8TvkAN8VDQJHEEGJhALMYtNsQ+kt0gksSh4HZqj9n5hI=" >> ~/.ssh/known_hosts
-  - chmod 600 ~/.ssh/*
+archlinux:
+  packages:
+    - git
+    - base-devel
+
+  install:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "$SSH_KEY" > ~/.ssh/aur
+    - echo -e "Host aur.archlinux.org\n  IdentityFile ~/.ssh/aur\n  User aur" > ~/.ssh/config
+    - echo "aur.archlinux.org,5.9.250.164 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOZAVWmj2k+dHTfyum7FyIivGcVUkDFHaXmPNxDwF7l8TvkAN8VDQJHEEGJhALMYtNsQ+kt0gksSh4HZqj9n5hI=" >> ~/.ssh/known_hosts
+    - chmod 600 ~/.ssh/*
+
+  script:
+    - ls -la
+    - ./patch.sh
 
 script:
-  - ./patch.sh
+- "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
